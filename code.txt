@@ -1,0 +1,36 @@
+#include <Adafruit_ILI9341_AS.h>
+#include <MySignals.h>
+#include "Wire.h"
+#include "SPI.h"
+
+Adafruit_ILI9341_AS tft = Adafruit_ILI9341_AS(TFT_CS, TFT_DC);
+
+uint16_t graphic_x = 0;
+uint16_t valRead;
+uint16_t graphic_prevRead;
+
+#define graphic_low_extrem 230
+#define graphic_high_extrem 50
+#define graphic_left_extrem 0
+#define graphic_right_extrem 320
+
+void setup(){
+  Serial.begin(115200);
+  MySignals.begin();
+  tft.init();
+  tft.setRotation(3);
+  tft.fillScreen(ILI9341_BLACK);
+  tft.fillRect(0,0,320,30,ILI9341_RED);
+  tft.setTextColor(ILI9341_WHITE); 
+  tft.drawString("bpm",5,5,4);
+  tft.drawLine(graphic_left_extrem, graphic_low_extrem, 
+               graphic_right_extrem, graphic_high_extrem, ILI9341_RED);
+}
+
+void loop(){
+  if (MySignals.getPulsioximeterMicro() == 1) {
+    //tft.drawNumber(MySignals.pulsioximeterData.BPM,0,30,2);
+    //tft.drawNumber(MySignals.pulsioximeterData.O2,0,45,2);
+  }
+ delay(1000);
+}
